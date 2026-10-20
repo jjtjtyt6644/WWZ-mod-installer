@@ -1,0 +1,25 @@
+name: Publish release
+
+# Pushing a tag like v1.0.0 publishes releases/v1.0.0/WWZModSetup.exe as a GitHub Release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the installer for this tag exists
+        run: test -f "releases/${GITHUB_REF_NAME}/WWZModSetup.exe"
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: WWZ Mod ${{ github.ref_name }}
+          body_path: releases/${{ github.ref_name }}/NOTES.md
+          files: releases/${{ github.ref_name }}/WWZModSetup.exe
+          make_latest: "true"
