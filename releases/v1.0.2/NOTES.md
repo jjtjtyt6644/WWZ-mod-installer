@@ -1,0 +1,3 @@
+- **Steam check:** the sidebar shows whether Steam is running. If it isn't, WWZ Mod tells you and offers an **Open Steam** button. Launch game and Achievements now wait for Steam instead of failing.
+- **Account level:** added a note explaining why the game shows 999. The game recalculates your account level from your class levels and prestige.
+- **Removed the Armory page.**
