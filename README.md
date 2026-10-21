@@ -13,7 +13,7 @@ Run it, and you're done. It installs just for you, so it needs no admin rights a
 ## What it does
 - **Save editor:** set your Supplies, Challenge Coins and account level. It updates both your Steam Cloud and local saves, and backs them up first.
 - **Class mastery:** set any class to any level and prestige, or max them all in one click.
-- **Armory:** set weapon levels, switch between skins you own, and see suggested perks.
+- **Armory:** set weapon levels, manage perk loadouts (including one-click suggested perks on every gun) and skins.
 - **Mod browser:** search Nexus Mods. It only downloads files that passed Nexus's virus scan (the green check), and lets you turn mods on or off at any time.
 - **Steam achievements:** view them, and unlock or relock them.
 - **Play history:** tracks what each play session earned you, with automatic backups.
@@ -27,6 +27,7 @@ WWZ Mod checks this page for new versions. You can install updates with one clic
 ## Versions
 | Version | Notes |
 | --- | --- |
+| [v1.0.1](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.1) | Perk loadouts, equip suggested perks on all guns, tier skin unlocks, weapon renaming |
 | [v1.0.0](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.0) | First public release |
 
 ## Disclaimer

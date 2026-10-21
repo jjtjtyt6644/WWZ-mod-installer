@@ -1,0 +1,6 @@
+- **Perk loadouts:** the Armory now shows each gun's three perk slots (two Common, one Unique) with what's equipped.
+- **Equip suggested on all guns:** gives every gun at level 10+ our picks in one click, and asks before unlocking any locked perks.
+- **Equip or clear perks** on single guns.
+- **Tier skins** (Tier 2–9, A/B) can be unlocked and equipped. DLC, event and reward skins still link to the game or Steam.
+- **Rename weapons** to match the names you see in game. Weapons are now grouped by type.
+- **Safety check:** after your next play session, WWZ Mod checks the game kept the perks it equipped.
