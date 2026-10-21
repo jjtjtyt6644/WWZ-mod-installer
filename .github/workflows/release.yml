@@ -1,25 +1,91 @@
 name: Publish release
 
-# Pushing a tag like v1.0.0 publishes releases/v1.0.0/WWZModSetup.exe as a GitHub Release.
+# Two ways to publish a version (the app's updater reads the latest release's WWZModSetup.exe):
+#   1. On github.com: Releases -> Draft a new release -> tag vX.Y.Z -> attach WWZModSetup.exe -> Publish.
+#      This workflow then checks the installer and marks the release as latest.
+#   2. Commit releases/vX.Y.Z/WWZModSetup.exe (+ NOTES.md) and push tag vX.Y.Z.
+#      This workflow creates the release and uploads the installer.
+# You can also re-run it for any tag from the Actions tab (Run workflow).
 on:
   push:
     tags: ["v*"]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to check/publish (e.g. v1.0.8)"
+        required: true
 
 permissions:
   contents: write
 
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}
+      ASSET: WWZModSetup.exe
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check the installer for this tag exists
-        run: test -f "releases/${GITHUB_REF_NAME}/WWZModSetup.exe"
+      - name: Wait for a release created on github.com
+        if: github.event_name == 'push'
+        run: |
+          # Publishing on the website pushes the tag first; give the release a moment to appear.
+          for i in $(seq 1 12); do
+            gh release view "$TAG" >/dev/null 2>&1 && exit 0
+            [ -f "releases/$TAG/$ASSET" ] && exit 0
+            sleep 10
+          done
 
-      - uses: softprops/action-gh-release@v2
-        with:
-          name: WWZ Mod ${{ github.ref_name }}
-          body_path: releases/${{ github.ref_name }}/NOTES.md
-          files: releases/${{ github.ref_name }}/WWZModSetup.exe
-          make_latest: "true"
+      - name: Create the release from the repo folder if needed
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
+          elif [ -f "releases/$TAG/$ASSET" ]; then
+            notes="releases/$TAG/NOTES.md"; [ -f "$notes" ] || { echo "WWZ Mod $TAG" > /tmp/notes.md; notes=/tmp/notes.md; }
+            gh release create "$TAG" "releases/$TAG/$ASSET" --title "WWZ Mod $TAG" --notes-file "$notes" --latest
+          else
+            echo "::error::No release named $TAG and no releases/$TAG/$ASSET in the repo. Attach $ASSET to a release or commit it there."
+            exit 1
+          fi
+
+      - name: Make sure the installer is attached
+        run: |
+          if ! gh release view "$TAG" --json assets -q '.assets[].name' | grep -qx "$ASSET"; then
+            if [ -f "releases/$TAG/$ASSET" ]; then
+              gh release upload "$TAG" "releases/$TAG/$ASSET" --clobber
+            else
+              echo "::error::Release $TAG has no $ASSET attached. Edit the release and attach it (the in-app updater looks for that exact name)."
+              exit 1
+            fi
+          fi
+
+      - name: Check the installer
+        run: |
+          gh release download "$TAG" -p "$ASSET" -D /tmp/check --clobber
+          f="/tmp/check/$ASSET"
+          size=$(stat -c %s "$f")
+          [ "$size" -gt 1000000 ] || { echo "::error::$ASSET is only $size bytes; it looks broken."; exit 1; }
+          [ "$(head -c 2 "$f")" = "MZ" ] || { echo "::error::$ASSET is not a Windows program."; exit 1; }
+          sha=$(sha256sum "$f" | cut -d' ' -f1)
+          {
+            echo "### WWZ Mod $TAG"
+            echo "- $ASSET: $((size / 1048576)) MB"
+            echo "- SHA-256: \`$sha\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Mark as latest (unless it is a pre-release or draft)
+        run: |
+          state=$(gh release view "$TAG" --json isPrerelease,isDraft -q '"\(.isPrerelease) \(.isDraft)"')
+          if [ "$state" = "false false" ]; then
+            gh release edit "$TAG" --latest
+          else
+            echo "Pre-release or draft; not marking as latest."
+          fi
