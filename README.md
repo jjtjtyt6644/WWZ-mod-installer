@@ -14,11 +14,14 @@ The installer isn't code-signed yet, so Windows SmartScreen doesn't recognise it
 Click **More info → Run anyway**.
 
 ### Antivirus / VirusTotal
-On [VirusTotal](https://www.virustotal.com/gui/file/d74ba80c81fdc1a2f0d2bff89e123ef8271726eeaa678800d6a4f2933bf3c409),
-v1.0.8 is flagged by **1 of 68** engines: Microsoft, as `Trojan:Win32/Wacatac.C!ml`. The other 67 find nothing.
-The `!ml` ending means it's a **machine-learning guess**, not a known virus. WWZ Mod reads and writes the game's memory
-the same way Cheat Engine does, and it isn't code-signed, so automated scanners can get suspicious.
-If you want to be sure, you can decompile it and check the code yourself.
+WWZ Mod reads and writes the game's memory the same way Cheat Engine does, and it isn't code-signed, so a scanner's
+**machine-learning** guess can flag it even though it's clean. A detection whose name ends in `!ml` (for example
+Microsoft's `Trojan:Win32/Wacatac.C!ml`) is a guess from that model, not a known virus — on v1.0.8 that was the only
+flag, 1 of 68 engines, with the other 67 finding nothing.
+
+You can check any build yourself on [VirusTotal](https://www.virustotal.com/gui/search): paste its SHA-256, or upload
+the installer. v1.0.9's SHA-256 is `0ad28d30e317d254928b5841c8cf157fcedae64c2de7aaec9f01fe1c9a7d2b9c`.
+If you want to be completely sure, you can decompile it and check the code yourself.
 
 ## What it does
 - **Save editor:** set your Supplies, Challenge Coins and account level. It updates both your Steam Cloud and local saves, and backs them up first. If the game is open, WWZ Mod can close it for you so your changes stick.
@@ -26,9 +29,9 @@ If you want to be sure, you can decompile it and check the code yourself.
 - **Mod browser:** search Nexus Mods. It only downloads files that passed Nexus's virus scan (the green check), and lets you turn mods on or off at any time.
 - **Steam achievements:** view them, and unlock or relock them. WWZ Mod tells you if Steam isn't open.
 - **Cheats:** infinite ammo, health, class equipment and more, applied live while you play.
-  - **Quick cheats (F5–F8):** type the number you see, press its key, use it, wait 2 seconds, press again. A rising beep means it's found. **F9** switches every cheat on or off.
+  - **Quick cheats (F5–F8):** type the number you see, press its key, use it, wait 2 seconds, press again. A rising beep means it's found. **F9** switches every cheat on or off. Ammo lives in each gun, so press the key again after you change guns or start a new match.
   - **Class detection:** your class is read from your save, so F7 follows it (Slasher: stun gun, and so on).
-  - **Make permanent:** do it once and the cheat switches on by itself every match, with no scanning.
+  - **Safe freezing:** each value is checked before every write, so changing guns switches the cheat off cleanly and asks for a fresh find instead of freezing or crashing the game.
   - **Advanced scanner:** find any value by its hex address, narrow it down with *Value decreased*, then freeze it.
   - **In-game overlay (F10):** shows which cheats are on, over the game. Play in **Borderless** mode to see it.
 - **Play history:** tracks what each play session earned you, with automatic backups.
@@ -46,7 +49,8 @@ WWZ Mod checks this page for new versions. You can install updates with one clic
 ## Versions
 | Version | Notes |
 | --- | --- |
-| [v1.0.8](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.8) | Cheats page, quick cheats with F5–F9, class detection, Make permanent, advanced hex scanner, in-game overlay |
+| [v1.0.9](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.9) | Fixed the freeze/crash when changing guns with infinite ammo on; removed the unreliable Make permanent auto-load |
+| [v1.0.8](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.8) | Cheats page, quick cheats with F5–F9, class detection, advanced hex scanner, in-game overlay |
 | [v1.0.2](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.2) | Steam check with Open Steam button, account level note, Armory removed |
 | [v1.0.1](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.1) | Perk loadouts, equip suggested perks on all guns, tier skin unlocks, weapon renaming |
 | [v1.0.0](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.0) | First public release |
