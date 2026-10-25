@@ -20,7 +20,7 @@ Microsoft's `Trojan:Win32/Wacatac.C!ml`) is a guess from that model, not a known
 flag, 1 of 68 engines, with the other 67 finding nothing.
 
 You can check any build yourself on [VirusTotal](https://www.virustotal.com/gui/search): paste its SHA-256, or upload
-the installer. v1.0.9's SHA-256 is `0ad28d30e317d254928b5841c8cf157fcedae64c2de7aaec9f01fe1c9a7d2b9c`.
+the installer. v1.0.10's SHA-256 is `067f8ef1b5ff0fe95b10f1e74f2315ec27790ed830e2b787d65ed650761a718b`.
 If you want to be completely sure, you can decompile it and check the code yourself.
 
 ## What it does
@@ -33,7 +33,7 @@ If you want to be completely sure, you can decompile it and check the code yours
   - **Class detection:** your class is read from your save, so F7 follows it (Slasher: stun gun, and so on).
   - **Safe freezing:** each value is checked before every write, so changing guns switches the cheat off cleanly and asks for a fresh find instead of freezing or crashing the game.
   - **Advanced scanner:** find any value by its hex address, narrow it down with *Value decreased*, then freeze it.
-  - **In-game overlay (F10):** shows which cheats are on, over the game. Play in **Borderless** mode to see it.
+  - **In-game overlay (F10):** shows which cheats are on, over the game. Play in **Borderless** mode to see it; in exclusive Fullscreen nothing can show over the game, and WWZ Mod tells you so.
 - **Play history:** tracks what each play session earned you, with automatic backups.
 - **Backups:** restore, compare, and export or import your save.
 - **Appearance:** background art with visibility and blur, accent colours, and a reduce-motion option.
@@ -49,6 +49,7 @@ WWZ Mod checks this page for new versions. You can install updates with one clic
 ## Versions
 | Version | Notes |
 | --- | --- |
+| [v1.0.10](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.10) | The in-game overlay stays on top of the game instead of disappearing behind it; tells you when WWZ is in exclusive fullscreen |
 | [v1.0.9](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.9) | Fixed the freeze/crash when changing guns with infinite ammo on; removed the unreliable Make permanent auto-load |
 | [v1.0.8](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.8) | Cheats page, quick cheats with F5–F9, class detection, advanced hex scanner, in-game overlay |
 | [v1.0.2](https://github.com/jjtjtyt6644/WWZ-mod-installer/releases/tag/v1.0.2) | Steam check with Open Steam button, account level note, Armory removed |
